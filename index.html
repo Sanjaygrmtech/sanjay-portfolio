@@ -6,6 +6,7 @@
 <title>Sanjay Singh | Head of SEO & AI-Powered Marketing Strategist</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <style>
 :root {
   --primary: #0f172a;
@@ -402,6 +403,7 @@ h1, h2, h3, h4, h5, h6 {
   position: relative;
 }
 
+/* Updated About Image to hold the real picture */
 .about-image {
   width: 100%;
   aspect-ratio: 4/5;
@@ -410,10 +412,20 @@ h1, h2, h3, h4, h5, h6 {
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 6rem;
-  color: white;
   position: relative;
   overflow: hidden;
+  box-shadow: var(--shadow-lg);
+}
+
+.about-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+
+.about-image:hover img {
+  transform: scale(1.05);
 }
 
 .about-image-badge {
@@ -425,6 +437,7 @@ h1, h2, h3, h4, h5, h6 {
   padding: 16px 20px;
   box-shadow: var(--shadow-lg);
   text-align: center;
+  z-index: 10;
 }
 
 .about-image-badge .number {
@@ -583,6 +596,23 @@ h1, h2, h3, h4, h5, h6 {
   border: 3px solid var(--bg);
   box-shadow: 0 0 0 3px var(--accent);
   z-index: 2;
+}
+
+/* Updated Timeline Layout to accommodate Skill Chips */
+.timeline-skills {
+  flex: 1;
+  display: flex;
+  flex-wrap: wrap;
+  align-content: center;
+  gap: 8px;
+  padding: 20px 0;
+}
+
+.timeline-item:nth-child(odd) .timeline-skills { 
+  justify-content: flex-start; 
+}
+.timeline-item:nth-child(even) .timeline-skills { 
+  justify-content: flex-end; 
 }
 
 .timeline-content {
@@ -995,76 +1025,22 @@ h1, h2, h3, h4, h5, h6 {
 .mock-metric .change.up { color: var(--success); }
 .mock-metric .change.down { color: var(--danger); }
 
+/* Updated Chart Container for Chart.js */
 .mock-chart {
   background: #ffffff;
   border: 1px solid var(--border);
   border-radius: 8px;
   padding: 20px;
-  min-height: 200px;
+  height: 250px; 
   position: relative;
-}
-
-.mock-chart-title {
-  font-size: 0.82rem;
-  font-weight: 600;
-  color: var(--text-dark);
-  margin-bottom: 16px;
-}
-
-.chart-bars {
-  display: flex;
-  align-items: flex-end;
-  gap: 8px;
-  height: 150px;
-  padding-top: 10px;
-}
-
-.chart-bar-group {
-  flex: 1;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  height: 100%;
-  justify-content: flex-end;
 }
 
-.chart-bar {
-  width: 100%;
-  max-width: 35px;
-  background: var(--gradient);
-  border-radius: 4px 4px 0 0;
-  transition: height 1.5s cubic-bezier(0.4, 0, 0.2, 1);
-  position: relative;
-}
-
-.chart-bar.secondary {
-  background: rgba(6,182,212,0.2);
-}
-
-.chart-bar-label {
-  font-size: 0.65rem;
-  color: var(--text-light);
-  margin-top: 6px;
-  text-align: center;
-}
-
-/* Line chart mock */
-.line-chart-svg {
-  width: 100%;
-  height: 140px;
-}
-
-.chart-line {
-  fill: none;
-  stroke: var(--accent);
-  stroke-width: 2.5;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-}
-
-.chart-area {
-  fill: url(#areaGradient);
-  opacity: 0.3;
+.mock-chart canvas {
+  flex: 1;
+  width: 100% !important;
+  height: 100% !important;
 }
 
 /* ===== SERVICES ===== */
@@ -1385,6 +1361,7 @@ h1, h2, h3, h4, h5, h6 {
   .services-grid { grid-template-columns: 1fr 1fr; }
   .experience-timeline::before { left: 20px; }
   .timeline-item, .timeline-item:nth-child(odd) { flex-direction: column; padding-left: 50px; text-align: left; }
+  .timeline-skills, .timeline-item:nth-child(odd) .timeline-skills { justify-content: flex-start; padding: 10px 0; }
   .timeline-dot { left: 20px; }
   .timeline-item:nth-child(odd) .timeline-content ul li { padding-left: 18px; padding-right: 0; }
   .timeline-item:nth-child(odd) .timeline-content ul li::before { left: 0; right: auto; }
@@ -1452,10 +1429,8 @@ h1, h2, h3, h4, h5, h6 {
 </head>
 <body>
 
-<!-- Scroll Progress Bar -->
 <div class="scroll-progress" id="scrollProgress"></div>
 
-<!-- Navbar -->
 <nav class="navbar" id="navbar">
   <div class="nav-content">
     <a href="#hero" class="nav-logo">Sanjay<span>.</span></a>
@@ -1475,7 +1450,6 @@ h1, h2, h3, h4, h5, h6 {
   </div>
 </nav>
 
-<!-- HERO SECTION -->
 <section class="hero" id="hero">
   <div class="container">
     <div class="hero-content">
@@ -1525,13 +1499,13 @@ h1, h2, h3, h4, h5, h6 {
     </div>
   </div>
 </section>
-<!-- ABOUT SECTION -->
+
 <section class="section" id="about">
   <div class="container">
     <div class="about-grid reveal">
       <div class="about-image-container">
         <div class="about-image">
-          <i class="fas fa-user"></i>
+          <img src="sanjay_singh.jpg" alt="Sanjay Singh - Head of SEO">
         </div>
         <div class="about-image-badge">
           <div class="number">17+</div>
@@ -1567,7 +1541,6 @@ h1, h2, h3, h4, h5, h6 {
   </div>
 </section>
 
-<!-- KEY METRICS -->
 <section class="section section-alt" id="metrics">
   <div class="container">
     <div class="section-header reveal">
@@ -1600,7 +1573,6 @@ h1, h2, h3, h4, h5, h6 {
   </div>
 </section>
 
-<!-- EXPERIENCE SECTION -->
 <section class="section" id="experience">
   <div class="container">
     <div class="section-header reveal">
@@ -1609,10 +1581,15 @@ h1, h2, h3, h4, h5, h6 {
       <p>Building, scaling, and leading SEO functions from the ground up at Great Media Technologies.</p>
     </div>
     <div class="experience-timeline reveal">
-      <!-- Phase 1 -->
+      
       <div class="timeline-item">
         <div class="timeline-dot"></div>
-        <div class="timeline-content" style="flex:1;"></div>
+        <div class="timeline-skills">
+          <div class="tool-tag"><i class="fas fa-search"></i> SEO Fundamentals</div>
+          <div class="tool-tag"><i class="fas fa-code"></i> HTML / CSS Basics</div>
+          <div class="tool-tag"><i class="fas fa-chart-bar"></i> Baseline Tracking</div>
+          <div class="tool-tag"><i class="fas fa-mobile-alt"></i> Web Performance</div>
+        </div>
         <div class="timeline-content">
           <span class="timeline-date">2008 – 2012 | Foundation Phase</span>
           <h3>SEO Analyst → Senior SEO Executive</h3>
@@ -1626,7 +1603,7 @@ h1, h2, h3, h4, h5, h6 {
           </ul>
         </div>
       </div>
-      <!-- Phase 2 -->
+
       <div class="timeline-item">
         <div class="timeline-dot"></div>
         <div class="timeline-content">
@@ -1642,12 +1619,24 @@ h1, h2, h3, h4, h5, h6 {
             <li>Grew team from 5 to 15 marketing professionals</li>
           </ul>
         </div>
-        <div class="timeline-content" style="flex:1;"></div>
+        <div class="timeline-skills">
+          <div class="tool-tag"><i class="fab fa-google"></i> Google Ads</div>
+          <div class="tool-tag"><i class="fab fa-facebook"></i> Meta Ads</div>
+          <div class="tool-tag"><i class="fas fa-vial"></i> A/B Testing</div>
+          <div class="tool-tag"><i class="fas fa-envelope"></i> Email Marketing</div>
+          <div class="tool-tag"><i class="fas fa-users"></i> Team Management</div>
+        </div>
       </div>
-      <!-- Phase 3 -->
+
       <div class="timeline-item">
         <div class="timeline-dot"></div>
-        <div class="timeline-content" style="flex:1;"></div>
+        <div class="timeline-skills">
+          <div class="tool-tag"><i class="fas fa-cogs"></i> Technical SEO</div>
+          <div class="tool-tag"><i class="fas fa-chart-line"></i> GA4 & GSC</div>
+          <div class="tool-tag"><i class="fas fa-project-diagram"></i> Schema Markup</div>
+          <div class="tool-tag"><i class="fas fa-search"></i> Semrush & Ahrefs</div>
+          <div class="tool-tag"><i class="fas fa-network-wired"></i> Site Architecture</div>
+        </div>
         <div class="timeline-content">
           <span class="timeline-date">2017 – 2022 | Leadership Phase</span>
           <h3>Head of SEO & Project Coordinator</h3>
@@ -1662,7 +1651,7 @@ h1, h2, h3, h4, h5, h6 {
           </ul>
         </div>
       </div>
-      <!-- Phase 4 -->
+
       <div class="timeline-item">
         <div class="timeline-dot"></div>
         <div class="timeline-content">
@@ -1678,13 +1667,19 @@ h1, h2, h3, h4, h5, h6 {
             <li>Automated marketing KPI reporting using GA4, Python, and Google Sheets — saving 6+ hours/week</li>
           </ul>
         </div>
-        <div class="timeline-content" style="flex:1;"></div>
+        <div class="timeline-skills">
+          <div class="tool-tag"><i class="fas fa-robot"></i> ChatGPT & Claude</div>
+          <div class="tool-tag"><i class="fas fa-sitemap"></i> Programmatic SEO</div>
+          <div class="tool-tag"><i class="fas fa-shield-alt"></i> E-E-A-T & YMYL</div>
+          <div class="tool-tag"><i class="fab fa-python"></i> Python Automation</div>
+          <div class="tool-tag"><i class="fas fa-pen-fancy"></i> SurferSEO & Jasper</div>
+        </div>
       </div>
+
     </div>
   </div>
 </section>
 
-<!-- SKILLS SECTION -->
 <section class="section section-alt" id="skills">
   <div class="container">
     <div class="section-header reveal">
@@ -1765,7 +1760,6 @@ h1, h2, h3, h4, h5, h6 {
   </div>
 </section>
 
-<!-- AI-POWERED MARKETING SECTION -->
 <section class="section ai-section section-dark" id="ai">
   <div class="container">
     <div class="section-header reveal">
@@ -1796,7 +1790,6 @@ h1, h2, h3, h4, h5, h6 {
       </div>
     </div>
 
-    <!-- AI Case Study -->
     <div class="ai-card reveal" style="margin-top:40px;">
       <div class="ai-card-icon"><i class="fas fa-flask"></i></div>
       <h3>🔬 AI Case Study: Finance Client — AI-Driven Content Strategy</h3>
@@ -1812,7 +1805,6 @@ h1, h2, h3, h4, h5, h6 {
       </ul>
     </div>
 
-    <!-- AI Tools Showcase -->
     <div class="reveal" style="margin-top:40px; text-align:center;">
       <h3 style="color:#fff; margin-bottom:20px; font-size:1.1rem;">My AI Toolkit</h3>
       <div class="ai-tools-showcase" style="justify-content:center;">
@@ -1838,7 +1830,7 @@ h1, h2, h3, h4, h5, h6 {
     </div>
   </div>
 </section>
-<!-- CASE STUDIES SECTION -->
+
 <section class="section" id="casestudies">
   <div class="container">
     <div class="section-header reveal">
@@ -1847,7 +1839,6 @@ h1, h2, h3, h4, h5, h6 {
       <p>A selection of projects spanning finance, legal, EdTech, e-commerce, and B2B — with data-backed outcomes.</p>
     </div>
 
-    <!-- CASE STUDY 1: Finance -->
     <div class="case-study-card reveal" style="margin-bottom: 40px;">
       <div class="case-study-header">
         <span class="case-study-badge">Finance / YMYL</span>
@@ -1876,7 +1867,7 @@ h1, h2, h3, h4, h5, h6 {
             </ul>
           </div>
         </div>
-        <!-- Mock GA4 Dashboard -->
+        
         <div class="mock-dashboard">
           <div class="mock-dash-header"><i class="fas fa-chart-line"></i> Google Analytics 4 — Organic Traffic Overview</div>
           <div class="mock-dash-body">
@@ -1887,24 +1878,13 @@ h1, h2, h3, h4, h5, h6 {
               <div class="mock-metric"><div class="label">Bounce Rate</div><div class="value">34.2%</div><div class="change up">↓ 28%</div></div>
             </div>
             <div class="mock-chart">
-              <div class="mock-chart-title">Organic Sessions — Monthly Trend</div>
-              <svg class="line-chart-svg" viewBox="0 0 600 140">
-                <defs>
-                  <linearGradient id="areaGradient" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="0%" stop-color="#06b6d4" stop-opacity="0.3"/>
-                    <stop offset="100%" stop-color="#06b6d4" stop-opacity="0"/>
-                  </linearGradient>
-                </defs>
-                <path class="chart-area" d="M0,130 L33,125 L67,120 L100,115 L133,108 L167,100 L200,88 L233,80 L267,72 L300,60 L333,48 L367,42 L400,35 L433,28 L467,22 L500,18 L533,15 L567,12 L600,10 L600,140 L0,140 Z"/>
-                <path class="chart-line" d="M0,130 L33,125 L67,120 L100,115 L133,108 L167,100 L200,88 L233,80 L267,72 L300,60 L333,48 L367,42 L400,35 L433,28 L467,22 L500,18 L533,15 L567,12 L600,10"/>
-              </svg>
+              <canvas id="ga4Chart"></canvas>
             </div>
           </div>
         </div>
       </div>
     </div>
 
-    <!-- CASE STUDY 2: EdTech -->
     <div class="case-study-card reveal" style="margin-bottom: 40px;">
       <div class="case-study-header">
         <span class="case-study-badge">EdTech</span>
@@ -1933,6 +1913,7 @@ h1, h2, h3, h4, h5, h6 {
             </ul>
           </div>
         </div>
+        
         <div class="mock-dashboard">
           <div class="mock-dash-header"><i class="fas fa-search"></i> Google Search Console — Performance Report</div>
           <div class="mock-dash-body">
@@ -1943,28 +1924,13 @@ h1, h2, h3, h4, h5, h6 {
               <div class="mock-metric"><div class="label">Avg. Position</div><div class="value">8.4</div><div class="change up">↑ from 42</div></div>
             </div>
             <div class="mock-chart">
-              <div class="mock-chart-title">Search Impressions — Monthly Growth</div>
-              <div class="chart-bars">
-                <div class="chart-bar-group"><div class="chart-bar" style="height:8%"></div><div class="chart-bar-label">M1</div></div>
-                <div class="chart-bar-group"><div class="chart-bar" style="height:12%"></div><div class="chart-bar-label">M2</div></div>
-                <div class="chart-bar-group"><div class="chart-bar" style="height:18%"></div><div class="chart-bar-label">M3</div></div>
-                <div class="chart-bar-group"><div class="chart-bar" style="height:25%"></div><div class="chart-bar-label">M4</div></div>
-                <div class="chart-bar-group"><div class="chart-bar" style="height:35%"></div><div class="chart-bar-label">M5</div></div>
-                <div class="chart-bar-group"><div class="chart-bar" style="height:45%"></div><div class="chart-bar-label">M6</div></div>
-                <div class="chart-bar-group"><div class="chart-bar" style="height:55%"></div><div class="chart-bar-label">M7</div></div>
-                <div class="chart-bar-group"><div class="chart-bar" style="height:63%"></div><div class="chart-bar-label">M8</div></div>
-                <div class="chart-bar-group"><div class="chart-bar" style="height:72%"></div><div class="chart-bar-label">M9</div></div>
-                <div class="chart-bar-group"><div class="chart-bar" style="height:80%"></div><div class="chart-bar-label">M10</div></div>
-                <div class="chart-bar-group"><div class="chart-bar" style="height:90%"></div><div class="chart-bar-label">M11</div></div>
-                <div class="chart-bar-group"><div class="chart-bar" style="height:100%"></div><div class="chart-bar-label">M12</div></div>
-              </div>
+              <canvas id="gscChart"></canvas>
             </div>
           </div>
         </div>
       </div>
     </div>
 
-    <!-- CASE STUDY 3: E-Commerce -->
     <div class="case-study-card reveal" style="margin-bottom: 40px;">
       <div class="case-study-header">
         <span class="case-study-badge">E-Commerce</span>
@@ -1993,6 +1959,7 @@ h1, h2, h3, h4, h5, h6 {
             </ul>
           </div>
         </div>
+        
         <div class="mock-dashboard">
           <div class="mock-dash-header"><i class="fab fa-google"></i> Google Ads — Campaign Performance Dashboard</div>
           <div class="mock-dash-body">
@@ -2003,29 +1970,13 @@ h1, h2, h3, h4, h5, h6 {
               <div class="mock-metric"><div class="label">CPA</div><div class="value">$16.67</div><div class="change up">↓ 42%</div></div>
             </div>
             <div class="mock-chart">
-              <div class="mock-chart-title">Revenue vs. Spend — Monthly Comparison</div>
-              <svg class="line-chart-svg" viewBox="0 0 600 140">
-                <defs>
-                  <linearGradient id="areaGradient2" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="0%" stop-color="#10b981" stop-opacity="0.3"/>
-                    <stop offset="100%" stop-color="#10b981" stop-opacity="0"/>
-                  </linearGradient>
-                </defs>
-                <path fill="url(#areaGradient2)" opacity="0.3" d="M0,120 L50,115 L100,105 L150,95 L200,82 L250,68 L300,55 L350,45 L400,38 L450,30 L500,22 L550,18 L600,12 L600,140 L0,140 Z"/>
-                <path fill="none" stroke="#10b981" stroke-width="2.5" stroke-linecap="round" d="M0,120 L50,115 L100,105 L150,95 L200,82 L250,68 L300,55 L350,45 L400,38 L450,30 L500,22 L550,18 L600,12"/>
-                <path fill="none" stroke="#f59e0b" stroke-width="2" stroke-dasharray="6,4" stroke-linecap="round" d="M0,125 L50,123 L100,121 L150,119 L200,118 L250,116 L300,114 L350,113 L400,111 L450,110 L500,109 L550,108 L600,107"/>
-              </svg>
-              <div style="display:flex; gap:20px; margin-top:8px; font-size:0.72rem;">
-                <span style="color:#10b981;">━━ Revenue</span>
-                <span style="color:#f59e0b;">╌╌ Spend</span>
-              </div>
+               <canvas id="adsChart"></canvas>
             </div>
           </div>
         </div>
       </div>
     </div>
 
-    <!-- CASE STUDY 4: B2B SaaS -->
     <div class="case-study-card reveal" style="margin-bottom: 40px;">
       <div class="case-study-header">
         <span class="case-study-badge">B2B / SaaS</span>
@@ -2068,7 +2019,6 @@ h1, h2, h3, h4, h5, h6 {
       </div>
     </div>
 
-    <!-- CASE STUDY 5: Legal Startup -->
     <div class="case-study-card reveal">
       <div class="case-study-header">
         <span class="case-study-badge">Legal / Startup</span>
@@ -2113,7 +2063,6 @@ h1, h2, h3, h4, h5, h6 {
   </div>
 </section>
 
-<!-- SERVICES SECTION -->
 <section class="section section-alt" id="services">
   <div class="container">
     <div class="section-header reveal">
@@ -2171,7 +2120,6 @@ h1, h2, h3, h4, h5, h6 {
   </div>
 </section>
 
-<!-- TESTIMONIALS SECTION -->
 <section class="section" id="testimonials">
   <div class="container">
     <div class="section-header reveal">
@@ -2187,18 +2135,18 @@ h1, h2, h3, h4, h5, h6 {
           <div class="testimonial-avatar">MB</div>
           <div class="testimonial-info">
             <h4>Mainak Banerjee</h4>
-            <p>Growth & Performance Marketing | 15+ Yrs Experience | UAE & MENA Markets</p>
+            <p>Growth & Performance Marketing | UAE</p>
           </div>
         </div>
       </div>
       <div class="testimonial-card">
         <div class="testimonial-quote">"</div>
-        <p class="testimonial-text">Sanjay is a brilliant internet marketing expert and project coordinator with many years of experience! He successfully runs multiple websites. He is extremely enthusiastic about his work which is infectious, makes it fun to learn, and easy to remember. He always has a creative, positive outlook and he's good at organizing and bringing people together.</p>
+        <p class="testimonial-text">Sanjay is a brilliant internet marketing expert and project coordinator with many years of experience! He successfully runs multiple websites. He is extremely enthusiastic about his work which is infectious, makes it fun to learn, and easy to remember.</p>
         <div class="testimonial-author">
           <div class="testimonial-avatar">EA</div>
           <div class="testimonial-info">
             <h4>Eqbal Ahmad</h4>
-            <p>Drupal Developer at Grindwell Norton - Saint Gobain India</p>
+            <p>Drupal Developer</p>
           </div>
         </div>
       </div>
@@ -2215,12 +2163,12 @@ h1, h2, h3, h4, h5, h6 {
       </div>
       <div class="testimonial-card">
         <div class="testimonial-quote">"</div>
-        <p class="testimonial-text">Academic den to professional career, it has always been a great journey with Sanjay Da. Indeed a brotherly and go-to-guy personality. Knowledge is the key to connect and create a stable bond with him. Learnt a lot of things in a completely different job role. Cheers to all his support as always!</p>
+        <p class="testimonial-text">Academic den to professional career, it has always been a great journey with Sanjay Da. Indeed a brotherly and go-to-guy personality. Knowledge is the key to connect and create a stable bond with him. Learnt a lot of things in a completely different job role.</p>
         <div class="testimonial-author">
           <div class="testimonial-avatar">PP</div>
           <div class="testimonial-info">
             <h4>Priyam Paul</h4>
-            <p>Compliance and Resource Coordinator at Great Media Technologies Pvt Ltd.</p>
+            <p>Compliance and Resource Coordinator</p>
           </div>
         </div>
       </div>
@@ -2231,7 +2179,7 @@ h1, h2, h3, h4, h5, h6 {
           <div class="testimonial-avatar">AD</div>
           <div class="testimonial-info">
             <h4>Abhro Das</h4>
-            <p>SEO Analyst at Indus Net TechShu Digital Pvt Ltd</p>
+            <p>SEO Analyst</p>
           </div>
         </div>
       </div>
@@ -2239,7 +2187,6 @@ h1, h2, h3, h4, h5, h6 {
   </div>
 </section>
 
-<!-- EDUCATION & CERTIFICATIONS -->
 <section class="section section-dark" id="education">
   <div class="container">
     <div class="section-header reveal">
@@ -2272,7 +2219,6 @@ h1, h2, h3, h4, h5, h6 {
         <div class="year" style="color:#94a3b8;">Cloud Infrastructure & Administration — Dec 2022 – Jan 2023</div>
       </div>
     </div>
-    <!-- Certifications -->
     <div class="reveal" style="margin-top:50px; text-align:center;">
       <h3 style="color:#fff; margin-bottom:24px;">Professional Certifications</h3>
       <div class="cert-grid">
@@ -2286,38 +2232,6 @@ h1, h2, h3, h4, h5, h6 {
   </div>
 </section>
 
-<!-- ARTICLES & THOUGHT LEADERSHIP -->
-<section class="section section-alt">
-  <div class="container">
-    <div class="section-header reveal">
-      <div class="section-label"><i class="fas fa-pen-alt"></i> Thought Leadership</div>
-      <h2>Sharing Knowledge & Insights</h2>
-      <p>I regularly write about SEO strategy, AI in marketing, and digital growth on LinkedIn.</p>
-    </div>
-    <div class="reveal" style="text-align:center;">
-      <div style="display:grid; grid-template-columns: repeat(3,1fr); gap:24px; max-width:800px; margin:0 auto;">
-        <div style="padding:24px; background:var(--bg-card); border:1px solid var(--border); border-radius:var(--radius); text-align:center;">
-          <i class="fab fa-linkedin" style="font-size:2rem; color:#0077b5; margin-bottom:12px;"></i>
-          <h4 style="font-size:0.95rem; margin-bottom:4px;">LinkedIn Articles</h4>
-          <p style="font-size:0.82rem; color:var(--text-light);">Multiple articles on SEO, AI, and digital marketing strategy</p>
-        </div>
-        <div style="padding:24px; background:var(--bg-card); border:1px solid var(--border); border-radius:var(--radius); text-align:center;">
-          <i class="fas fa-book-reader" style="font-size:2rem; color:var(--accent); margin-bottom:12px;"></i>
-          <h4 style="font-size:0.95rem; margin-bottom:4px;">Avid Reader</h4>
-          <p style="font-size:0.82rem; color:var(--text-light);">Constantly reading about emerging AI tools, SEO trends, and industry shifts</p>
-        </div>
-        <div style="padding:24px; background:var(--bg-card); border:1px solid var(--border); border-radius:var(--radius); text-align:center;">
-          <i class="fas fa-flask" style="font-size:2rem; color:var(--purple); margin-bottom:12px;"></i>
-          <h4 style="font-size:0.95rem; margin-bottom:4px;">AI Researcher</h4>
-          <p style="font-size:0.82rem; color:var(--text-light);">Hands-on research & bug identification across AI tools and platforms</p>
-        </div>
-      </div>
-      <a href="https://www.linkedin.com/in/sanjay-singh-seo-lead" target="_blank" class="btn btn-primary" style="margin-top:32px;"><i class="fab fa-linkedin"></i> Read My Articles on LinkedIn</a>
-    </div>
-  </div>
-</section>
-
-<!-- CONTACT SECTION -->
 <section class="section" id="contact">
   <div class="container">
     <div class="section-header reveal">
@@ -2342,15 +2256,9 @@ h1, h2, h3, h4, h5, h6 {
         <p>Connect with me</p>
       </a>
     </div>
-    <div class="reveal" style="text-align:center; margin-top:40px;">
-      <div style="display:inline-flex; align-items:center; gap:10px; padding:14px 28px; background:var(--accent-glow); border:1px solid rgba(6,182,212,0.2); border-radius:50px;">
-        <span class="dot" style="width:10px;height:10px;background:var(--success);border-radius:50%;animation:pulse 2s infinite;"></span>
-        <span style="font-size:0.9rem; font-weight:600; color:var(--accent);">Open to Remote Global Roles — Full-Time & Freelance</span>
-      </div>
-    </div>
   </div>
 </section>
-<!-- FOOTER -->
+
 <footer class="footer">
   <div class="container">
     <div class="footer-social">
@@ -2363,12 +2271,158 @@ h1, h2, h3, h4, h5, h6 {
   </div>
 </footer>
 
-<!-- Back to Top Button -->
 <button class="back-to-top" id="backToTop" onclick="window.scrollTo({top:0, behavior:'smooth'})">
   <i class="fas fa-arrow-up"></i>
 </button>
 
 <script>
+// ===== CHART.JS IMPLEMENTATION FOR DASHBOARDS =====
+document.addEventListener("DOMContentLoaded", function() {
+    // Shared Chart configuration options
+    Chart.defaults.font.family = "'Inter', sans-serif";
+    Chart.defaults.color = "#64748b";
+    
+    // 1. GA4 Organic Traffic Chart (Line Chart with Fill)
+    const ctxGa4 = document.getElementById('ga4Chart').getContext('2d');
+    
+    // Create gradient fill
+    let gradientGa4 = ctxGa4.createLinearGradient(0, 0, 0, 400);
+    gradientGa4.addColorStop(0, 'rgba(6, 182, 212, 0.5)');   
+    gradientGa4.addColorStop(1, 'rgba(6, 182, 212, 0.0)');
+
+    new Chart(ctxGa4, {
+        type: 'line',
+        data: {
+            labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+            datasets: [{
+                label: 'Organic Sessions',
+                data: [12000, 14500, 18000, 21000, 25500, 29000, 34000, 38500, 42000, 46000, 49500, 52100],
+                borderColor: '#06b6d4',
+                backgroundColor: gradientGa4,
+                borderWidth: 3,
+                pointBackgroundColor: '#ffffff',
+                pointBorderColor: '#06b6d4',
+                pointRadius: 4,
+                pointHoverRadius: 6,
+                fill: true,
+                tension: 0.4
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: { display: false },
+                tooltip: {
+                    backgroundColor: '#0f172a',
+                    padding: 12,
+                    titleFont: { size: 13 },
+                    bodyFont: { size: 14, weight: 'bold' },
+                    displayColors: false
+                }
+            },
+            scales: {
+                y: { beginAtZero: true, grid: { borderDash: [4, 4], color: '#e2e8f0' } },
+                x: { grid: { display: false } }
+            }
+        }
+    });
+
+    // 2. Google Search Console Chart (Bar Chart)
+    const ctxGsc = document.getElementById('gscChart').getContext('2d');
+    new Chart(ctxGsc, {
+        type: 'bar',
+        data: {
+            labels: ['M1', 'M2', 'M3', 'M4', 'M5', 'M6', 'M7', 'M8', 'M9', 'M10', 'M11', 'M12'],
+            datasets: [{
+                label: 'Search Impressions',
+                data: [50000, 120000, 280000, 410000, 580000, 720000, 850000, 960000, 1050000, 1120000, 1180000, 1200000],
+                backgroundColor: '#3b82f6',
+                borderRadius: 4,
+                hoverBackgroundColor: '#06b6d4'
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: { display: false },
+                tooltip: {
+                    backgroundColor: '#0f172a',
+                    padding: 12,
+                    callbacks: {
+                        label: function(context) {
+                            return context.parsed.y.toLocaleString() + ' Impressions';
+                        }
+                    }
+                }
+            },
+            scales: {
+                y: { beginAtZero: true, grid: { borderDash: [4, 4], color: '#e2e8f0' } },
+                x: { grid: { display: false } }
+            }
+        }
+    });
+
+    // 3. Google Ads Dual Axis Chart (Line Chart comparing Spend vs Revenue)
+    const ctxAds = document.getElementById('adsChart').getContext('2d');
+    new Chart(ctxAds, {
+        type: 'line',
+        data: {
+            labels: ['M1', 'M2', 'M3', 'M4', 'M5', 'M6', 'M7', 'M8', 'M9', 'M10', 'M11', 'M12', 'M13', 'M14'],
+            datasets: [
+                {
+                    label: 'Revenue ($)',
+                    data: [15000, 18500, 24000, 29000, 36000, 44000, 51000, 59000, 68000, 75000, 82000, 89000, 96000, 104000],
+                    borderColor: '#10b981', // Success green
+                    backgroundColor: 'rgba(16, 185, 129, 0.1)',
+                    borderWidth: 3,
+                    pointRadius: 3,
+                    fill: true,
+                    tension: 0.3,
+                    yAxisID: 'y'
+                },
+                {
+                    label: 'Ad Spend ($)',
+                    data: [8000, 8100, 8250, 8150, 8300, 8400, 8200, 8100, 8050, 8100, 8200, 8150, 8000, 8050],
+                    borderColor: '#f59e0b', // Warning orange
+                    borderWidth: 2,
+                    borderDash: [5, 5],
+                    pointRadius: 0,
+                    fill: false,
+                    tension: 0.1,
+                    yAxisID: 'y1'
+                }
+            ]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            interaction: { mode: 'index', intersect: false },
+            plugins: {
+                legend: { position: 'top', labels: { usePointStyle: true, boxWidth: 8 } },
+                tooltip: { backgroundColor: '#0f172a', padding: 12 }
+            },
+            scales: {
+                y: { 
+                    type: 'linear', 
+                    display: true, 
+                    position: 'left',
+                    title: { display: true, text: 'Revenue' }
+                },
+                y1: { 
+                    type: 'linear', 
+                    display: true, 
+                    position: 'right',
+                    title: { display: true, text: 'Ad Spend' },
+                    grid: { drawOnChartArea: false }
+                },
+                x: { grid: { display: false } }
+            }
+        }
+    });
+});
+
 // ===== SCROLL PROGRESS BAR =====
 window.addEventListener('scroll', () => {
   const scrollProgress = document.getElementById('scrollProgress');
@@ -2418,7 +2472,6 @@ function animateCounters() {
       }
     };
 
-    // Use IntersectionObserver to start animation when visible
     const observer = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
@@ -2455,7 +2508,6 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     const target = document.querySelector(this.getAttribute('href'));
     if (target) {
       target.scrollIntoView({ behavior: 'smooth' });
-      // Close mobile menu
       document.getElementById('navLinks').classList.remove('active');
     }
   });
